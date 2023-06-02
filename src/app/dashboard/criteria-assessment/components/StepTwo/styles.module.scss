@@ -1,0 +1,35 @@
+.container {
+  width: 955px;
+  box-shadow: 0px 3px 10px 4px rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  padding: 19px 147px 40px 31px;
+
+  .list {
+    display: flex;
+    flex-direction: column;
+    gap: 33px;
+    margin-top: 22px;
+
+    .item {
+      display: flex;
+      align-items: center;
+      gap: 40px;
+
+      .name {
+        width: 433px;
+      }
+    }
+  }
+
+  .buttons {
+    margin-top: 66px;
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+
+    & .leftIcon {
+      color: #625fda !important;
+      background-color: #fff !important;
+    }
+  }
+}

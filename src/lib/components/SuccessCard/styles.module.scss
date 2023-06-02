@@ -1,0 +1,23 @@
+.card {
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  margin: 52px auto 0;
+  gap: 26px;
+  align-items: center;
+  text-align: center;
+
+  .buttons {
+    display: flex;
+    gap: 20px;
+  }
+
+  .icon {
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+
+  .description {
+    margin-bottom: 20px;
+  }
+}

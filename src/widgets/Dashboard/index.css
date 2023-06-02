@@ -1,0 +1,11 @@
+.ant-layout-sider-children {
+    background-color: white;
+    border-right: 1px solid #DDDDDD;
+}
+.sign-out {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    padding: 20px;
+}

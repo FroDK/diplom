@@ -1,0 +1,109 @@
+.buttons {
+  display: flex;
+  gap: 25px;
+
+  .leftButton {
+    color: #758fea;
+    background-color: #fff;
+  }
+}
+
+.moduleForm {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  background: #ffffff;
+  box-shadow: 0px 3px 10px 4px rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  width: 955px;
+  height: 155px;
+  padding: 24px 51px;
+
+  .name {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+  }
+
+  .title {
+    width: 200px;
+  }
+}
+
+.criteriaForm {
+  padding: 20px 0 32px 51px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  margin-top: 43px;
+  box-shadow: 0px 3px 10px 4px rgba(0, 0, 0, 0.12);
+  border-radius: 10px;
+  width: 955px;
+  min-height: 395px;
+  position: relative;
+
+  .name {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+  }
+
+  .title {
+    width: 200px;
+  }
+
+  .sideButtons {
+    position: absolute;
+    top: 26px;
+    right: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 26px;
+    .delete {
+      color: #818181;
+      border-color: #818181;
+      background-color: #fff;
+
+      &:hover {
+        color: #818181 !important;
+      }
+    }
+
+    .add {
+      color: #5fadad;
+      border-color: #5fadad;
+      background-color: #fff;
+
+      &:hover {
+        color: #5fadad !important;
+      }
+    }
+  }
+}
+
+.criteriaList {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 41px;
+
+  .item {
+    display: flex;
+    gap: 132px;
+    align-items: center;
+
+    .input {
+      display: flex;
+      gap: 13px;
+      align-items: center;
+
+      svg {
+        cursor: pointer;
+      }
+    }
+
+    .title {
+      width: 150px;
+    }
+  }
+}

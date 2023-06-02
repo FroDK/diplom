@@ -1,0 +1,53 @@
+{
+  "name": "diplom",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "predev": "ts-node --project ./tsconfig.node.json ./scripts/genAntdCss.tsx",
+    "prebuild": "cross-env NODE_ENV=production ts-node --project ./tsconfig.node.json ./scripts/genAntdCss.tsx"
+  },
+  "dependencies": {
+    "@ant-design/cssinjs": "^1.9.1",
+    "@ant-design/icons": "^5.0.1",
+    "@supabase/auth-helpers-nextjs": "^0.6.1",
+    "@supabase/auth-helpers-react": "^0.3.1",
+    "@supabase/gotrue-js": "^2.24.0",
+    "@supabase/supabase-js": "^2.21.0",
+    "@types/node": "20.1.0",
+    "@types/react-dom": "18.2.4",
+    "antd": "^5.4.6",
+    "client-only": "^0.0.1",
+    "eslint": "8.40.0",
+    "eslint-config-next": "13.4.1",
+    "global": "^4.4.0",
+    "jsonwebtoken": "^9.0.0",
+    "lodash": "^4.17.21",
+    "next": "13.4.1",
+    "next-nprogress-bar": "^1.2.1",
+    "nprogress": "^0.2.0",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-modal": "^3.16.1",
+    "sass": "^1.62.1",
+    "server-only": "^0.0.1",
+    "swr": "^2.1.5",
+    "typescript": "5.0.4",
+    "vercel": "^30.1.0"
+  },
+  "devDependencies": {
+    "@ant-design/static-style-extract": "^1.0.1",
+    "@types/lodash": "^4.14.195",
+    "@types/react": "^18.2.6",
+    "@types/react-modal": "^3.16.0",
+    "cross-env": "^7.0.3",
+    "encoding": "^0.1.13",
+    "prettier": "^2.8.8",
+    "supabase": "^1.57.2",
+    "ts-node": "^10.9.1",
+    "tslib": "^2.5.0"
+  }
+}

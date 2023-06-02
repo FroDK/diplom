@@ -1,0 +1,31 @@
+.wrapper {
+  min-width: 1048px; // 1280px - 232px (232px is the width of sider)
+
+  &.align-center {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .line {
+    width: 100%;
+    border: 0.5px solid #dddddd;
+    margin-bottom: 29px;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+
+  margin-bottom: 16px;
+}
+
+.spinner {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 500px;
+}
