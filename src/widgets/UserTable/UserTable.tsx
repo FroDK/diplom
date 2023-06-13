@@ -1,10 +1,12 @@
 'use client'
 
 import { ColumnsType } from 'antd/es/table'
-import { Button, Form, Input, Space, Table, Tooltip } from 'antd'
-import { DeleteOutlined, EditOutlined } from '@ant-design/icons'
-import { useState } from 'react'
+import { Button, Form, Input, Space, Table } from 'antd'
+import { useCallback, useState } from 'react'
 import { ERoles, ERolesLocalize } from '@/widgets/Dashboard/models/navItems'
+import _ from 'lodash'
+import fp from 'lodash/fp'
+import Fuse from 'fuse.js'
 
 export type UserType = {
   id: string
@@ -26,6 +28,7 @@ const layout = {
 }
 
 export const UserTable = ({ users }: UserTableProps) => {
+  const [usersData, setUsersData] = useState(users)
   const [expertLink, setExpertLink] = useState(
     `${process.env.NEXT_PUBLIC_URL!}/************************`
   )
@@ -37,12 +40,6 @@ export const UserTable = ({ users }: UserTableProps) => {
   )
   const [loadingChairmanLink, setLoadingChairmanLink] = useState(false)
   const [disabledChairmanLink, setDisabledChairmanLink] = useState(true)
-
-  const handleDeleteUser = async (key: string) => {
-    await fetch('http://localhost:3000/api/admin/user/' + key, {
-      method: 'DELETE',
-    })
-  }
 
   const columns: ColumnsType<UserType> = [
     {
@@ -96,6 +93,26 @@ export const UserTable = ({ users }: UserTableProps) => {
     }
   }
 
+  const onInputChange = useCallback(
+    (e: any) => {
+      const searchValue = e.target.value
+
+      const fuseOptions = {
+        keys: ['fio'],
+        threshold: 0.4, // Пороговое значение схожести (от 0 до 1)
+      }
+      const fuse = new Fuse(users, fuseOptions)
+
+      // Выполняем нечеткий поиск
+      const result = fuse.search(searchValue)
+
+      const flatUsers = _.flatMap(result, 'item')
+
+      setUsersData(searchValue.length ? flatUsers : users)
+    },
+    [users]
+  )
+
   return (
     <Space direction="vertical" size={16} style={{ width: '100%' }}>
       <Form {...layout} layout="horizontal" style={{ maxWidth: '800px' }}>
@@ -130,7 +147,13 @@ export const UserTable = ({ users }: UserTableProps) => {
           </Space>
         </Form.Item>
       </Form>
-      <Table columns={columns} dataSource={users} />
+      <Table
+        columns={columns}
+        dataSource={usersData}
+        title={() => (
+          <Input placeholder="Поиск пользователя" onChange={onInputChange} />
+        )}
+      />
     </Space>
   )
 }

@@ -8,15 +8,19 @@ import _, { forEach } from 'lodash'
 import { log } from 'util'
 import { ERoles, ERolesLocalize } from '@/widgets/Dashboard/models/navItems'
 import { undefined } from 'zod'
+import PageWrapper from '@/lib/components/PageWrapper/PageWrapper'
+import Typography from 'antd/es/typography/Typography'
 
 export const ReportsForm = ({
   contests,
   experts,
+  participants,
   typeContests,
   user,
 }: {
   contests: any[]
   experts: any[]
+  participants: any[]
   typeContests: any[]
   user: any
 }) => {
@@ -257,15 +261,106 @@ export const ReportsForm = ({
     [contests, supabase, typeContests]
   )
 
-  console.log('contests:', contests)
-  console.log('typeContests:', typeContests)
-  console.log('user:', user)
+  const onFormReportByParticipant = useCallback(
+    async (values: any) => {
+      const participant = participants.find(
+        (participant) => participant.id === values.participant
+      )
+
+      console.log('user:', user)
+
+      const { data: teams } = await supabase
+        .from('team_member')
+        .select('*')
+        .eq('user', participant.id)
+
+      console.log('teams:', teams)
+
+      const uniqueTeamIds = _.uniqBy(teams, 'team').map((obj) => obj.team)
+      console.log('uniqueTeamIds:', uniqueTeamIds)
+
+      const filteredContests = contests.filter((obj) => {
+        return obj.form_answers.teamMarks.some((mark: any) =>
+          uniqueTeamIds.includes(mark.team)
+        )
+      })
+
+      console.log('contests:', contests)
+      console.log('filteredContests:', filteredContests)
+
+      // ------------------------------------------------------------------------------
+      const workbook = utils.book_new()
+
+      for (const contest of filteredContests) {
+        const { data: listOfTeams, error } = await supabase
+          .from('team')
+          .select(
+            'id, name, team_member(is_captain, user(fio, email, user_role))'
+          )
+          .eq('contest', contest.id)
+
+        console.log('listOfTeams:', listOfTeams)
+
+        const modules = contest.form_answers.teamMarks
+        const experts = contest.form_answers.rateUser
+
+        const sumRates = _(modules)
+          .groupBy('team') // группируем модули по полю 'team'
+          .map((modules, teamId) => ({
+            id: teamId,
+            // @ts-ignore
+            name: _.find(listOfTeams, { id: teamId }).name, // находим имя команды по id
+            ratesSum: _.sumBy(modules, 'rates'), // считаем сумму баллов из 'rates' внутри каждой группы модулей
+          }))
+          .value()
+
+        const dataToExcel = sumRates.map((sum) => ({
+          'Название команды': sum.name,
+          'Сумма баллов': sum.ratesSum,
+        }))
+
+        const teamWithMaxRates = _.maxBy(sumRates, 'ratesSum')
+        const winTeam = {
+          'Название команды победителя': undefined,
+          [teamWithMaxRates!.name]: undefined,
+        }
+
+        const nameDateData = {
+          'Название битвы': contest.title,
+          'Место проведения': `${contest.country}, ${contest.city}, ${contest.address}`,
+          'Тип битвы': contest.type_contest.name,
+        }
+
+        const nameDateSheet = utils.json_to_sheet([nameDateData])
+        const teamSheet = utils.json_to_sheet(dataToExcel)
+        const winnerTeamSheet = utils.json_to_sheet([winTeam])
+
+        let a = utils.sheet_to_json(nameDateSheet, { header: 1 })
+        let b = utils.sheet_to_json(teamSheet, { header: 1 })
+        let c = utils.sheet_to_json(winnerTeamSheet, { header: 1 })
+
+        a = a.concat(['']).concat(b).concat(['']).concat(c)
+
+        let worksheet = utils.json_to_sheet(a, { skipHeader: true })
+
+        utils.book_append_sheet(workbook, worksheet, contest.title)
+      }
+
+      writeFile(workbook, `${participant.fio}.xlsx`)
+    },
+    [contests, participants, supabase, user]
+  )
+
+  // console.log('contests:', contests)
+  // console.log('typeContests:', typeContests)
+  // console.log('user:', user)
 
   const isAdmin = user.app_metadata.claims_admin
   const userRole = isAdmin ? ERoles.ADMIN : user.app_metadata.user_role
 
   return (
-    <>
+    <PageWrapper title='Отчеты'>
+      <Typography style={{fontSize: '16px', fontWeight: '400'}}>Выберите, какой отчет вы хотите сформировать:</Typography>
       <Row gutter={[16, 16]}>
         {userRole === ERoles.CHAIRMAN && (
           <Col span={12}>
@@ -352,7 +447,7 @@ export const ReportsForm = ({
             </Card>
           </Col>
         )}
-        {(userRole === ERoles.EXPERT || isAdmin) && (
+        {(userRole === ERoles.EXPERT || userRole === ERoles.CHAIRMAN || isAdmin) && (
           <Col span={12}>
             <Card title="Отчет по конкретному эксперту" bordered={false}>
               <Row>
@@ -393,7 +488,55 @@ export const ReportsForm = ({
             </Card>
           </Col>
         )}
+
+        {(userRole === ERoles.PARTICIPANT || isAdmin) && (
+          <Col span={12}>
+            <Card
+              title="Отчет по битвам конкретного участника"
+              bordered={false}
+            >
+              <Row>
+                <Form
+                  autoComplete="off"
+                  onFinish={onFormReportByParticipant}
+                  style={{
+                    width: '100%',
+                    display: 'flex',
+                    gap: '15px',
+                    justifyContent: 'space-between',
+                  }}
+                >
+                  <Form.Item
+                    name="participant"
+                    style={{ flex: 1, marginBottom: 0 }}
+                    rules={[{ required: true, message: 'Выберите участника' }]}
+                  >
+                    <Select>
+                      {participants.map((participant) => (
+                        <Select.Option
+                          key={participant.id}
+                          value={participant.id}
+                        >
+                          {participant.fio}
+                        </Select.Option>
+                      ))}
+                    </Select>
+                  </Form.Item>
+                  <Form.Item style={{ marginBottom: 0 }}>
+                    <Button
+                      type="primary"
+                      htmlType="submit"
+                      style={{ margin: 0 }}
+                    >
+                      Скачать
+                    </Button>
+                  </Form.Item>
+                </Form>
+              </Row>
+            </Card>
+          </Col>
+        )}
       </Row>
-    </>
+    </PageWrapper>
   )
 }

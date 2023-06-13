@@ -35,6 +35,7 @@ const PageWrapper = ({
           className={styles.title}
           style={{
             fontSize: fontSize,
+            fontWeight: '600'
           }}
         >
           {title}

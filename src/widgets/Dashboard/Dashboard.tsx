@@ -51,12 +51,13 @@ export const Dashboard = ({
           style={{
             height: 32,
             margin: 16,
-            background: 'rgb(255,255,255)',
+            background: 'rgb(175, 179, 255)',
           }}
         >
           <Image src="/logo.png" alt="logo" width={164} height={31} />
         </div>
         <Menu
+          style={{background: 'rgb(175, 179, 255)'}}
           onClick={onClick}
           theme="light"
           selectedKeys={[selectedKey]}
@@ -64,13 +65,13 @@ export const Dashboard = ({
           items={items}
         />
         <div className="sign-out">
-          <Button icon={<LogoutOutlined />} block onClick={onButtonClick}>
+          <Button style={{background: 'rgb(175, 179, 255)', border: 'none', color: '#280F5F', boxShadow: 'none'}} icon={<LogoutOutlined />} block onClick={onButtonClick}>
             Выйти
           </Button>
         </div>
       </Sider>
       <Layout className="site-layout">
-        <Header
+        {/* <Header
           style={{
             padding: 0,
             backgroundColor: 'white',
@@ -78,8 +79,8 @@ export const Dashboard = ({
           }}
         >
           {headerTitle}
-        </Header>
-        <Content style={{ padding: '30px' }}>{children}</Content>
+        </Header> */}
+        <Content style={{ padding: '30px', background: '#fff' }}>{children}</Content>
       </Layout>
     </Layout>
   )

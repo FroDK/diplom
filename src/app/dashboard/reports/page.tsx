@@ -18,6 +18,11 @@ export default async function Reports() {
     .select()
     .eq('user_role', 'expert')
 
+  const { data: participants } = await supabase
+    .from('users')
+    .select()
+    .eq('user_role', 'participant')
+
   const { data: typeContests } = await supabase.from('type_contest').select()
 
   const {
@@ -28,6 +33,7 @@ export default async function Reports() {
     <ReportsForm
       contests={contests as any[]}
       experts={experts as any[]}
+      participants={participants as any[]}
       typeContests={typeContests as any[]}
       user={user}
     />

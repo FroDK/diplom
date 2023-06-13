@@ -42,13 +42,13 @@ const adminItems: MenuItem[] = [
     adminRoutes[EAdminItems.CHAMPIONSHIP_TYPES]
   ),
   getItem(EAdminItems.REPORTS, adminRoutes[EAdminItems.REPORTS]),
-  // getItem(EAdminItems.TEAMS, adminRoutes[EAdminItems.TEAMS]),
-  // getItem(
-  //   EAdminItems.TEAM_COMPOSITION,
-  //   adminRoutes[EAdminItems.TEAM_COMPOSITION]
-  // ),
+  getItem(EAdminItems.TEAMS, adminRoutes[EAdminItems.TEAMS]),
+  getItem(
+    EAdminItems.TEAM_COMPOSITION,
+    adminRoutes[EAdminItems.TEAM_COMPOSITION]
+  ),
   // getItem(EAdminItems.CRITERIA, adminRoutes[EAdminItems.CRITERIA]),
-  // getItem(EAdminItems.FORMS, adminRoutes[EAdminItems.FORMS]),
+  getItem(EAdminItems.FORMS, adminRoutes[EAdminItems.FORMS]),
   // getItem(EAdminItems.ROLES, adminRoutes[EAdminItems.ROLES]),
   // getItem(EAdminItems.RESULTS, adminRoutes[EAdminItems.RESULTS]),
 ]
