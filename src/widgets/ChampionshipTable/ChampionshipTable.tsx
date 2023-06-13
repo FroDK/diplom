@@ -40,17 +40,17 @@ export interface ContestDataType {
 }
 
 interface ChampionshipTableProps {
-  contest: ContestDataType[]
+  contests: ContestDataType[]
 }
 
-export const ChampionshipTable = ({ contest }: ChampionshipTableProps) => {
+export const ChampionshipTable = ({ contests }: ChampionshipTableProps) => {
   const { supabase } = useSupabase()
 
   const [open, setOpen] = useState(false)
   const [openUpdateForm, setOpenUpdateForm] = useState(false)
   const [users, setUsers] = useState<any>([])
   const [typesContest, setTypesContest] = useState<any>([])
-  const [championships, setChampionships] = useState(contest)
+  const [championships, setChampionships] = useState(contests)
   const [loadingCreateChampionship, setLoadingCreateChampionship] =
     useState(false)
   const [contestForUpdate, setContestForUpdate] =
@@ -59,9 +59,37 @@ export const ChampionshipTable = ({ contest }: ChampionshipTableProps) => {
   const handleUpdateAction = async (record: ContestDataType) => {
     await loadData()
 
-    console.log(record)
     setContestForUpdate(record)
     setOpenUpdateForm(true)
+  }
+
+  const handleDeleteAction = async (record: ContestDataType) => {
+    await supabase.from('contest').delete().eq('id', record.id)
+
+    const { data, error } = await supabase.from('contest').select(`
+      id,
+      title,
+      address,
+      city,
+      country,
+      description,
+      kind_of_contest,
+      status,
+      created_at,
+      users (
+        id,
+        fio,
+        email,
+        user_role
+      ),
+      type_contest (
+        id,
+        name
+      )
+    `)
+
+    // @ts-ignore
+    setChampionships(data)
   }
 
   const columns: ColumnsType<ContestDataType> = [
@@ -135,7 +163,7 @@ export const ChampionshipTable = ({ contest }: ChampionshipTableProps) => {
               shape="circle"
               danger
               icon={<DeleteOutlined />}
-              onClick={() => {}}
+              onClick={() => handleDeleteAction(record)}
             />
           </Tooltip>
           <Tooltip title="Изменить чемпионат">

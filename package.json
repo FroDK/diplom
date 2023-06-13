@@ -36,7 +36,9 @@
     "server-only": "^0.0.1",
     "swr": "^2.1.5",
     "typescript": "5.0.4",
-    "vercel": "^30.1.0"
+    "uuid": "^9.0.0",
+    "vercel": "^30.1.0",
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.19.3/xlsx-0.19.3.tgz"
   },
   "devDependencies": {
     "@ant-design/static-style-extract": "^1.0.1",

@@ -1,36 +1,30 @@
-'use client'
+import ChampionShips from "@/widgets/ChampionShips/ChampionShips";
+import { createServerComponentSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { cookies, headers } from "next/headers";
 
-import PageWrapper from '@/lib/components/PageWrapper'
-import CreateBattleComponent from './components/CreateBattleComponent'
+export default async function MyChampionShips() {
+  const supabase = createServerComponentSupabaseClient({
+    headers,
+    cookies,
+  })
 
-const mok = [
-  {
-    id: 1,
-    name: 'Битва маркетологов',
-    status: 'В процессе',
-  },
-  {
-    id: 2,
-    name: 'Битва титанов',
-    status: 'Завершено',
-  },
-]
+  const {
+    data: { user },
+  } = await supabase.auth.getUser()
 
-export default async function Profile() {
-  return (
-    <PageWrapper title="Мои Чемпионаты">
-      <div>
-        {mok.map((item, i) => {
-          return (
-            <CreateBattleComponent
-              title={item.name}
-              status={item.status}
-              id={item.id}
-              key={i}
-            />
-          )
-        })}
-      </div>
-    </PageWrapper>
+  const { data, error } = await supabase.from('contest').select(`
+  *,
+  users (
+    id,
+    fio,
+    email,
+    user_role
+  ),
+  type_contest (
+    id,
+    name
   )
+`)
+
+  return (<ChampionShips id={user?.id} data={data} />)
 }

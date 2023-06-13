@@ -1,7 +1,7 @@
 'use client'
 
 import PageWrapper from '@/lib/components/PageWrapper'
-import { Button, Input, Select, Typography } from 'antd'
+import { Button, Input, Typography } from 'antd'
 
 import styles from './styles.module.scss'
 import { useEffect, useState } from 'react'
@@ -16,7 +16,7 @@ interface IForm {
   phone: string
   email: string
   description: string
-  qualities: string[] | null
+  qualities: string[] | []
 }
 
 export const Profile = (props: any) => {
@@ -26,7 +26,7 @@ export const Profile = (props: any) => {
       phone: '',
       email: '',
       description: '',
-      qualities: null,
+      qualities: [],
     })
 
   const [isSave, setIsSave] = useState(false)
@@ -44,7 +44,6 @@ export const Profile = (props: any) => {
   }
 
   const handleSelectChange = (value: string[]) => {
-    console.log(value)
     isSave === false && setIsSave(true)
     setForm((prevForm) => ({ ...prevForm, qualities: value }))
   }

@@ -1,87 +1,19 @@
-import { CreationTeams } from '@/widgets/CreationTeams/CreationTeams'
 import { createServerComponentSupabaseClient } from '@supabase/auth-helpers-nextjs'
 import { cookies, headers } from 'next/headers'
+import { CreationTeamsHOC } from '@/widgets/CreationTeams/CreationTeams'
+import { IBattle } from '../criteria-form/page/CriteriaFormPage'
 
-const mok = [
-  {
-    id: 1,
-    name: 'Битва маркетологов',
-    chairman: 'Иванов Иван Иванович',
-    date: '22.03.2023',
-    type: 'Командный зачет',
-    teams: [
-      {
-        name: 'Клуб Винкс. Школа Волшебниц',
-        id: 1,
-      },
-      {
-        name: 'Клуб Винкс',
-        id: 2,
-      },
-    ],
-    members: [
-      {
-        fullName: 'Иванов Иван Иванович',
-        isCaptain: false,
-        email: 'elvira_volkova_1988@yandex.ru',
-      },
-      {
-        fullName: 'Иванов Иван Иванович',
-        isCaptain: false,
-        email: 'elvira_volkova_1988@yandex.ru',
-      },
-      {
-        fullName: 'Иванов Иван Иванович',
-        isCaptain: false,
-        email: 'elvira_volkova_1988@yandex.ru',
-      },
-      {
-        fullName: 'Иванов Иван Иванович',
-        isCaptain: true,
-        email: 'elvira_volkova_1988@yandex.ru',
-      },
-    ],
-  },
-  {
-    id: 2,
-    name: 'Битва таргетологов',
-    chairman: 'Иванов Иван Иванович',
-    date: '22.03.2023',
-    type: 'Командный зачет',
-    teams: [
-      {
-        name: 'Клуб Винкс. Школа Волшебниц',
-        id: 1,
-      },
-      {
-        name: 'Клуб Винкс',
-        id: 2,
-      },
-    ],
-    members: [
-      {
-        fullName: 'Иванов Иван Иванович',
-        isCaptain: true,
-        email: 'elvira_volkova_1988@yandex.ru',
-      },
-      {
-        fullName: 'Иванов Иван Иванович',
-        isCaptain: false,
-        email: 'elvira_volkova_1988@yandex.ru',
-      },
-      {
-        fullName: 'Иванов Иван Иванович',
-        isCaptain: false,
-        email: 'elvira_volkova_1988@yandex.ru',
-      },
-      {
-        fullName: 'Иванов Иван Иванович',
-        isCaptain: false,
-        email: 'elvira_volkova_1988@yandex.ru',
-      },
-    ],
-  },
-]
+const formatDate = (date?: string) => {
+  if (!date) {
+    return
+  }
+
+  return new Date(date).toLocaleDateString('ru', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  })
+}
 
 export default async function CreationOfTeams() {
   const supabase = createServerComponentSupabaseClient({
@@ -89,29 +21,46 @@ export default async function CreationOfTeams() {
     cookies,
   })
 
-  const { data, error } = await supabase.from('contest_user').select(`
-  *,
-    auth.users(id)
-  `)
+  const { data } = await supabase.from('contest').select(`
+      id,
+      title,
+      kind_of_contest,
+      status,
+      created_at,
+      users (
+        id,
+        fio,
+        email,
+        user_role
+      ),
+      team (
+        id,
+        name
+      ),
+      type_contest (
+        name
+      )
+    `)
 
-  console.log(data)
+  // @ts-ignore
+  const sortArr: IBattle[] = [...data].sort((a) => {
+    return a.status === 'completed' ? 1 : -1
+  })
 
   return (
     <>
-      {mok.map((item, i) => (
-        <CreationTeams
-          id={item.id}
-          name={item.name}
-          chairman={item.chairman}
-          date={item.date}
-          type={item.type}
-          teams={item.teams}
-          members={item.members}
-          key={i}
-          mok={mok}
-          user={item.members}
-        />
-      ))}
+      {sortArr &&
+        sortArr.map((item) => (
+          <CreationTeamsHOC
+            key={item.id}
+            contestId={item.id}
+            name={item.title}
+            date={formatDate(item.created_at)}
+            type={item.type_contest.name}
+            subType={item.kind_of_contest}
+            status={item.status}
+          />
+        ))}
     </>
   )
 }

@@ -1,8 +1,9 @@
 interface IIconBasketProps {
   onClick?: () => void
+  onMouseEnter?: () => void
 }
 
-const IconBasket = ({onClick}: IIconBasketProps) => {
+const IconBasket = ({onClick, onMouseEnter}: IIconBasketProps) => {
   return (
     <svg
       width="20"
@@ -10,6 +11,7 @@ const IconBasket = ({onClick}: IIconBasketProps) => {
       viewBox="0 0 20 22"
       fill="none"
       onClick={onClick}
+      onMouseEnter={onMouseEnter}
       xmlns="http://www.w3.org/2000/svg">
       <path
         d="M6.88883 8.66327C6.85913 8.25012 6.50014 7.93927 6.08699 7.96897C5.67384 7.99867 5.36299 8.35766 5.39269 8.77081L5.92952 16.2394C5.95922 16.6526 6.31822 16.9634 6.73136 16.9337C7.14451 16.9041 7.45536 16.5451 7.42566 16.1319L6.88883 8.66327Z"

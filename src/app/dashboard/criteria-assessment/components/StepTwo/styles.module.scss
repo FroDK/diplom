@@ -30,6 +30,9 @@
     & .leftIcon {
       color: #625fda !important;
       background-color: #fff !important;
+      display: flex;
+      align-items: center;
+      gap: 11px;
     }
   }
 }

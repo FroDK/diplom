@@ -14,6 +14,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
+
       &::after {
         content: '';
         display: block;
@@ -43,7 +44,10 @@
 
     .module {
       display: flex;
-      flex-direction: column;
+      flex-direction: row;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      width: 700px;
       align-items: center;
       gap: 10px;
 
@@ -51,6 +55,19 @@
         display: flex;
         align-items: center;
         gap: 50px;
+
+        .button {
+          display: flex;
+          align-items: center;
+
+          &:hover {
+            color: #fff;
+          }
+        }
+
+        article {
+          width: 80px;
+        }
       }
 
       button {

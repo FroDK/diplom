@@ -1,45 +1,72 @@
+'use client'
+
 import { Typography } from 'antd'
 import styles from './styles.module.scss'
 
 import cn from 'classnames'
+import { useMemo } from 'react'
 
-const title = 'Заводные котята'
+interface ITeamMember {
+  id: string
+  is_captain: boolean
+  users: {
+    fio: string
+    email: string
+    phone?: string | null
+  }
+}
+interface IProps {
+  contestDate: string
+  contestName: string
+  contestStatus: string
 
-interface ITeamItemProps {
-  inProcess?: boolean
+  teamName: string
+  teamMembers: ITeamMember[]
 }
 
-const members = [
-  {
-    fullName: 'Макаров Антон Владимирович',
-    email: 'elvira_volkova_1988@yandex.ru',
-    number: '+7(910)123-23-23',
-    capitan: true,
-  },
-  {
-    fullName: 'Макаров Антон Владимирович',
-    email: 'elvira_volkova_1988@yandex.ru',
-    number: '+7(910)123-23-23',
-    capitan: false,
-  },
-  {
-    fullName: 'Макаров Антон Владимирович',
-    email: 'elvira_volkova_1988@yandex.ru',
-    number: '+7(910)123-23-23',
-    capitan: false,
-  },
-  {
-    fullName: 'Макаров Антон Владимирович',
-    email: 'elvira_volkova_1988@yandex.ru',
-    number: '+7(910)123-23-23',
-    capitan: false,
-  },
-]
+const TeamItem = ({
+  contestStatus,
+  contestName,
+  contestDate,
+  teamName,
+  teamMembers,
+}: IProps) => {
+  const inProgress = contestStatus !== 'completed'
 
-const TeamItem = ({ inProcess }: ITeamItemProps) => {
+  const statusColor =
+    contestStatus === 'in_progress'
+      ? '#4DCB4A'
+      : contestStatus === 'completed'
+      ? '#CB4A69'
+      : 'rgba(0, 0, 0, 0.88)'
+
+  const statusText =
+    contestStatus === 'in_progress'
+      ? 'В процессе'
+      : contestStatus === 'completed'
+      ? 'Завершена'
+      : 'Не начата'
+
+  const date = useMemo(() => {
+    if (contestDate) {
+      return new Date(contestDate).toLocaleDateString()
+    }
+  }, [contestDate])
+
   return (
-    <div className={cn(styles.wrapper, !inProcess && styles.disable)}>
+    <div className={cn(styles.wrapper, !inProgress && styles.disable)}>
       <div className={styles.status}>
+        {date !== undefined && (
+          <Typography
+            style={{
+              fontWeight: '300',
+              fontSize: '10px',
+            }}
+            color={'#6E6E6E'}
+          >
+            {date}
+          </Typography>
+        )}
         <Typography
           style={{
             fontWeight: '300',
@@ -47,25 +74,16 @@ const TeamItem = ({ inProcess }: ITeamItemProps) => {
           }}
           color={'#6E6E6E'}
         >
-          20.01.2023
+          {contestName}
         </Typography>
         <Typography
           style={{
             fontWeight: '300',
             fontSize: '10px',
+            color: statusColor,
           }}
-          color={'#6E6E6E'}
         >
-          Битва парикмахеров
-        </Typography>
-        <Typography
-          style={{
-            fontWeight: '300',
-            fontSize: '10px',
-          }}
-          color={inProcess ? '#4DCB4A' : '#CB4A69'}
-        >
-          В процессе
+          {statusText}
         </Typography>
       </div>
       <Typography
@@ -75,38 +93,45 @@ const TeamItem = ({ inProcess }: ITeamItemProps) => {
           fontSize: '16px',
         }}
       >
-        {title}
+        {teamName}
       </Typography>
       <div className={styles.content}>
-        {members.map((item, i) => {
+        {teamMembers.map((item, i) => {
           return (
             <div key={i} className={styles.item}>
               <Typography
-                className={cn(styles.fullName, item.capitan && styles.capitan)}
+                className={cn(
+                  styles.fullName,
+                  item.is_captain && styles.capitan
+                )}
                 style={{
                   fontWeight: '400',
                   fontSize: '14px',
                 }}
               >
-                {`${i + 1}. ${item.fullName}`}
+                {`${i + 1}. ${item.users.fio}`}
               </Typography>
-              <Typography
-                style={{
-                  fontWeight: '500',
-                  fontSize: '14px',
-                }}
-                className={styles.email}
-              >
-                {item.email}
-              </Typography>
-              <Typography
-                style={{
-                  fontWeight: '500',
-                  fontSize: '14px',
-                }}
-              >
-                {item.number}
-              </Typography>
+              {item.users.email && (
+                <Typography
+                  style={{
+                    fontWeight: '500',
+                    fontSize: '14px',
+                  }}
+                  className={styles.email}
+                >
+                  {item.users.email}
+                </Typography>
+              )}
+              {item.users.phone && (
+                <Typography
+                  style={{
+                    fontWeight: '500',
+                    fontSize: '14px',
+                  }}
+                >
+                  {item.users.phone}
+                </Typography>
+              )}
             </div>
           )
         })}

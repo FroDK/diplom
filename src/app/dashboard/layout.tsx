@@ -36,28 +36,21 @@ function getItem(
 
 const adminItems: MenuItem[] = [
   getItem(EAdminItems.USERS, adminRoutes[EAdminItems.USERS]),
-  getItem(
-    EAdminItems.USER_PROPERTIES,
-    adminRoutes[EAdminItems.USER_PROPERTIES]
-  ),
   getItem(EAdminItems.CHAMPIONSHIPS, adminRoutes[EAdminItems.CHAMPIONSHIPS]),
-  getItem(
-    EAdminItems.CREATE_CHAMPIONSHIP,
-    adminRoutes[EAdminItems.CREATE_CHAMPIONSHIP]
-  ),
   getItem(
     EAdminItems.CHAMPIONSHIP_TYPES,
     adminRoutes[EAdminItems.CHAMPIONSHIP_TYPES]
   ),
-  getItem(EAdminItems.TEAMS, adminRoutes[EAdminItems.TEAMS]),
-  getItem(
-    EAdminItems.TEAM_COMPOSITION,
-    adminRoutes[EAdminItems.TEAM_COMPOSITION]
-  ),
-  getItem(EAdminItems.CRITERIA, adminRoutes[EAdminItems.CRITERIA]),
-  getItem(EAdminItems.FORMS, adminRoutes[EAdminItems.FORMS]),
-  getItem(EAdminItems.ROLES, adminRoutes[EAdminItems.ROLES]),
-  getItem(EAdminItems.RESULTS, adminRoutes[EAdminItems.RESULTS]),
+  getItem(EAdminItems.REPORTS, adminRoutes[EAdminItems.REPORTS]),
+  // getItem(EAdminItems.TEAMS, adminRoutes[EAdminItems.TEAMS]),
+  // getItem(
+  //   EAdminItems.TEAM_COMPOSITION,
+  //   adminRoutes[EAdminItems.TEAM_COMPOSITION]
+  // ),
+  // getItem(EAdminItems.CRITERIA, adminRoutes[EAdminItems.CRITERIA]),
+  // getItem(EAdminItems.FORMS, adminRoutes[EAdminItems.FORMS]),
+  // getItem(EAdminItems.ROLES, adminRoutes[EAdminItems.ROLES]),
+  // getItem(EAdminItems.RESULTS, adminRoutes[EAdminItems.RESULTS]),
 ]
 
 const expertItems: MenuItem[] = [

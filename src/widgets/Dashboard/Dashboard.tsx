@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useMemo, useState } from 'react'
 import { Button, Layout, Menu, MenuProps } from 'antd'
 import { ItemType } from 'antd/es/menu/hooks/useItems'
 import './index.css'
@@ -34,6 +34,15 @@ export const Dashboard = ({
     supabase.auth.signOut()
   }, [supabase])
 
+  const headerTitle = useMemo(() => {
+    if (items?.length) {
+      // @ts-ignore
+      return items.find((item: ItemType) => item.key === selectedKey).label
+    } else {
+      return ''
+    }
+  }, [items, selectedKey])
+
   return (
     <Layout style={{ minHeight: '100vh' }}>
       <Sider>
@@ -61,25 +70,16 @@ export const Dashboard = ({
         </div>
       </Sider>
       <Layout className="site-layout">
-        {/* <Header
+        <Header
           style={{
             padding: 0,
             backgroundColor: 'white',
             borderBottom: '1px solid #DDDDDD',
           }}
-        /> */}
-        <Content style={{ padding: '30px' }}>
-          {/*<div*/}
-          {/*  style={{*/}
-          {/*    padding: 24,*/}
-          {/*    minHeight: 360,*/}
-          {/*    background: 'dodgerblue',*/}
-          {/*  }}*/}
-          {/*>*/}
-          {/*  Test*/}
-          {/*</div>*/}
-          {children}
-        </Content>
+        >
+          {headerTitle}
+        </Header>
+        <Content style={{ padding: '30px' }}>{children}</Content>
       </Layout>
     </Layout>
   )

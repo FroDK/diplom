@@ -38,7 +38,5 @@ export default async function Championships() {
       )
     `)
 
-  console.log(data)
-
-  return <ChampionshipTable contest={data as unknown as ContestDataType[]} />
+  return <ChampionshipTable contests={data as unknown as ContestDataType[]} />
 }

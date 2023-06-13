@@ -4,11 +4,12 @@ import { useEffect, useRef, useState } from 'react'
 
 interface IAddSelectProps {
   onChange: (e: any) => void
-  values: string[] | null
+  values: string[] | undefined
 }
 
 const AddSelect = ({ onChange, values }: IAddSelectProps) => {
   const [items, setItems] = useState<string[]>([])
+  const [selectedItems, setSelectedItems] = useState<string[]>([])
   const [name, setName] = useState('')
   const inputRef = useRef(null)
   const onNameChange = (event: any) => {
@@ -22,14 +23,14 @@ const AddSelect = ({ onChange, values }: IAddSelectProps) => {
   }
 
   useEffect(() => {
-    values && setItems(values)
+    values && setSelectedItems(values)
   }, [values])
 
   return (
     <Select
       style={{ width: 418 }}
       onChange={onChange}
-      value={values}
+      value={selectedItems}
       mode="tags"
       placeholder="Расскажите о себе, хобби, интересы и тд."
       dropdownRender={(menu) => (

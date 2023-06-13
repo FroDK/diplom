@@ -15,6 +15,8 @@ import { useSupabase } from '@/init/providers/supabase-provider'
 import _ from 'lodash'
 import { ERolesLocalize } from '@/widgets/Dashboard/models/navItems'
 import { ContestStatusLocalize, EContestStatus } from '@/shared/enums'
+import { IFormCriteria } from '@/app/dashboard/my-championships/components/types'
+import { uuid } from '@supabase/gotrue-js/dist/module/lib/helpers'
 
 type FormType = {
   address: string
@@ -26,6 +28,7 @@ type FormType = {
   typeOfContest: string
   kindOfContest: string
   usersFromForm: Array<string[]>
+  form?: IFormCriteria[]
 }
 
 interface ICreateChampionshipFormProps {
@@ -84,6 +87,23 @@ export const CreateChampionshipForm = ({
         type_contest: typeOfContest,
       })
       .select('id')
+
+      const championShipsInit = JSON.parse(localStorage.getItem('championShips') as string) ? JSON.parse(localStorage.getItem('championShips') as string) : []
+
+      const championShips = [...championShipsInit, {
+        id: uuid(),
+        title,
+        description,
+        country,
+        city,
+        address,
+        status,
+        kind_of_contest: kindOfContest,
+        type_contest: typeOfContest,
+        form: [],
+      } ]
+
+      localStorage.setItem('championShips', JSON.stringify(championShips))
 
     if (errorCreateContest) {
       api['error']({

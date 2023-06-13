@@ -11,7 +11,7 @@ export async function GET(request: Request) {
   }
 
   const token = jwt.sign(payload, process.env.ROLE_KEY, {
-    expiresIn: 3600, // 1 hour in seconds
+    expiresIn: 60 * 60 * 24, // 24 hours
   })
 
   return NextResponse.json({

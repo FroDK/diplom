@@ -62,30 +62,6 @@ export const UserTable = ({ users }: UserTableProps) => {
       key: 'email',
       dataIndex: 'email',
     },
-    {
-      title: 'Действия',
-      key: 'action',
-      render: (_, record) => (
-        <Space size="small">
-          <Tooltip title="Удалить пользователя">
-            <Button
-              shape="circle"
-              danger
-              icon={<DeleteOutlined />}
-              onClick={() => handleDeleteUser(record.id)}
-            />
-          </Tooltip>
-          <Tooltip title="Изменить пользователя">
-            <Button
-              type="primary"
-              shape="circle"
-              icon={<EditOutlined />}
-              disabled
-            />
-          </Tooltip>
-        </Space>
-      ),
-    },
   ]
 
   const handleGenerateLink = async (role: string) => {

@@ -71,6 +71,7 @@ export enum EAdminItems {
   FORMS = 'Формы (модули)',
   ROLES = 'Роли в системе',
   RESULTS = 'Результаты',
+  REPORTS = 'Отчеты',
 }
 
 export const adminRoutes = {
@@ -85,6 +86,7 @@ export const adminRoutes = {
   [EAdminItems.FORMS]: '/forms',
   [EAdminItems.ROLES]: '/roles',
   [EAdminItems.RESULTS]: '/results',
+  [EAdminItems.REPORTS]: '/reports',
 }
 
 export const getNavItemsByRole = (role: ERoles) => {

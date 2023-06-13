@@ -133,6 +133,11 @@ export const UpdateChampionshipForm = ({
 
     const userIds = transformSelectedRolesAndIds(users, usersFromForm)
 
+    const { error } = await supabase
+      .from('contest_user')
+      .delete()
+      .eq('contest_id', contest?.id)
+
     const { data, error: errorCreateUserContest } = await supabase
       .from('contest_user')
       .upsert(
@@ -276,7 +281,7 @@ export const UpdateChampionshipForm = ({
             htmlType="submit"
             className="login-form-button"
           >
-            Создать
+            Обновить
           </Button>
         </Form.Item>
       </Form>

@@ -1,5 +1,13 @@
+/* .sider {
+    :global {
+        .ant-layout-sider-children {
+            background-color: white;
+        }
+    }
+} */
+
 .ant-layout-sider-children {
-    background-color: white;
+    background-color: rgba(175, 179, 255);
     border-right: 1px solid #DDDDDD;
 }
 .sign-out {

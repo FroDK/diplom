@@ -3,21 +3,24 @@ import { Modal } from '../Modal'
 
 import styles from './styles.module.scss'
 import { Typography } from 'antd'
-import { IMok } from '@/widgets/CreationTeams/CreationTeams'
+import { ITeam } from '@/widgets/CreationTeams/CreationTeams'
 
 interface IShowTeamProps {
   showModal: boolean
-  handleClick: () => void
-  data: IMok[]
-  id?: number
+  onClose: () => void
+  data?: ITeam
 }
 
-const ShowTeam = ({ showModal, handleClick, data, id }: IShowTeamProps) => {
+const ShowTeam = ({ showModal, onClose, data }: IShowTeamProps) => {
+  if (!data) {
+    return null
+  }
+
   return (
     <Modal
       open={showModal}
-      onClose={handleClick}
-      title={`Команда: ${data[id as number]?.name}`}
+      onClose={onClose}
+      title={`Команда: ${data.name}`}
       titleSize={16}
       content={
         <table className={styles.modal}>
@@ -33,14 +36,14 @@ const ShowTeam = ({ showModal, handleClick, data, id }: IShowTeamProps) => {
                 <Typography color={'#656ED3'}>E-mail:</Typography>
               </td>
             </tr>
-            {data[id as number]?.members.map((item, i) => {
+            {data.team_member.map((item, i) => {
               return (
                 <tr key={i}>
                   <td className={styles.fullName}>{`${i + 1}. ${
-                    item.fullName
+                    item.user?.fio
                   }`}</td>
-                  <td>{item.isCaptain && <IconOk />}</td>
-                  <td>{item.email}</td>
+                  <td>{item.is_captain && <IconOk />}</td>
+                  <td>{item.user?.email}</td>
                 </tr>
               )
             })}

@@ -1,4 +1,4 @@
 {
   "extends": "next/core-web-vitals",
-  "ignorePatterns": ["src/schema.ts"]
+  "ignorePatterns": ["/src/schema.ts", "src/app/dashboard/criteria-assessment/components/StepThree/StepThree.tsx"]
 }
